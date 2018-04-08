@@ -1,6 +1,6 @@
 from spy_details import spy, Spy, ChatMessage # importing variables from spydetails.py
 from datetime import datetime # importing datetime library
-
+import csv
 from steganography.steganography import Steganography # importing Steganography library
 
 
@@ -13,6 +13,7 @@ def select_frnd():  # function to select a friend
     user_selected_frnd = input("Enter your choice: ")  # user selecting friend
     user_selected_frnd_index = user_selected_frnd-1
     return user_selected_frnd_index  # to return the selected friend index
+
 
 
 def send_message():  # function for sending message
@@ -46,11 +47,15 @@ def add_friend():  # function to add friend
     frnd = Spy ('','',0,0.0)
     frnd = {'name': "",'age':0,'ratings':0.0,'isonline':True,'chats':[]}  # dictionary for details of friend
     frnd.name =raw_input("What is your friend's name : ")
+    frnd.sal = raw_input("What should we call you")
     frnd.age=input("What is the age :")
     frnd.rating=input("What are the ratings : ")
+    frnd.is_online = True
     if len(frnd.name)>0 and 12<frnd['age']<50 and frnd['rating']>spy['rating']: # checking for spy details
         # adding the details in the respective lists
-        friends.append(frnd)  # appending friend details in friends list
+        with open('friends.csv','a') as friends_data:
+            writer = csv.writer(friends_data)
+            writer.writerow([frnd.name, frnd.sal, frnd.rating, frnd.age, frnd.is_online])
     else:
         print "The friend cannot be added "
     return len(friends)  # returning length of list friend_name
@@ -84,7 +89,7 @@ def spy_chat(spy_name,spy_age,spy_rating):  # function spy_chat to display menu
     choice= -1  # choice variable set to -1
     print 'Here are your options ' + spy_name
     while choice!=0:  # while loop will run until user choose to exit
-        print '     MENU     \n 1.Add a status \n 2.Add a friend \n 3.Send a message \n 4.Read a message\n 5.Read chats from a user \n 0.Exit'  # printing menu
+        print '     MENU     \n 1.Add a status \n 2.Add a friend \n 3.Send a message \n 4.Read a message\n 5.Read chat history \n 0.Exit'  # printing menu
         choice=input("Enter your choice:")  # taking choice input
         if choice == 1:  # choice 1
             current_status=add_status(current_status)
@@ -100,8 +105,9 @@ def spy_chat(spy_name,spy_age,spy_rating):  # function spy_chat to display menu
             send_message()  # calling send_message()function
         elif choice == 4:
             read_message()  # calling the read_message()function
-        elif choice == 5:  # to read a user,s message
-            print "will read a message"
+        elif choice == 5:  # to read chat history
+            read_history()
+
         elif choice == 0:  # to exit
             print 'Exit'
         else:  # for any invalid input
@@ -116,6 +122,18 @@ old_status=["Example status 1","Example status 2","Example status 3","Example st
 frnd1 = Spy('Example','Mr.',23,2.5)
 frnd2 = Spy('Example2','Mr.',25,3.5)
 friends=[frnd1, frnd2]  # list to store friend details
+
+
+def load_frnds():
+    with open('friends.csv', 'rb') as friends_data:
+        reader = csv.reader(friends_data)
+
+        for row in reader:
+            frnd  = Spy(name=row[0],salutation=row[1],age=row[3],rating=row[2])
+            friends.append(frnd)
+
+
+load_frnds()
 
 spy_reply=raw_input('Are you a new user? Y/N ')  # asking the user if he is a new user or not
 if spy_reply.upper() == 'N':

@@ -1,0 +1,4 @@
+name, salutation, rating, age, is_online
+Bedanta, Mr,20,2.5, True
+Example1, Mr, 22,3.4,True
+Example2, Ms, 24, 4.3, True
