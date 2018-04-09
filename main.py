@@ -51,8 +51,9 @@ def add_friend():  # function to add friend
     frnd.age=input("What is the age :")
     frnd.rating=input("What are the ratings : ")
     frnd.is_online = True
-    if len(frnd.name)>0 and 12<frnd['age']<50 and frnd['rating']>spy['rating']: # checking for spy details
+    if len(frnd.name)>0 and 12<frnd.age<50 and frnd.rating>spy.rating: # checking for spy details
         # adding the details in the respective lists
+        friends.append(frnd)
         with open('friends.csv','a') as friends_data:
             writer = csv.writer(friends_data)
             writer.writerow([frnd.name, frnd.sal, frnd.rating, frnd.age, frnd.is_online])
@@ -135,41 +136,39 @@ def load_frnds():
 
 load_frnds()
 
-spy_reply=raw_input('Are you a new user? Y/N ')  # asking the user if he is a new user or not
-if spy_reply.upper() == 'N':
-    print 'Welcome back!! '+spy['name']+" age is "+str(spy['age'])+' and your rating is '+ str(spy['rating'])
-    spy_chat(spy.name,spy.age,spy.rating)  # calling function spy_chat
+spy_reply=raw_input('Are you a new user? Y/N')
+if spy_reply .upper() == 'N':
+    print'Welcome back ' +spy.name+ " your age is" +  str(spy.age)+ ' and ypur rating is ' + str(spy.rating)
+    spy_chat(spy.name,spy.age,spy.rating)  # calling spy_chat
+
+
 
 elif spy_reply.upper() == 'Y':
     spy = Spy("","",0,0.0)
-   # spy={'name':"",'age':0,'rating':0.0}  # dictionary to store spy details
-    spy.name=raw_input('Enter your name ')  # take name as input from user
-    if spy['name'].isspace():  # to check for space input
-        print 'Enter a valid name'
-    elif spy['name'].isdigit():  # to check for digit input
-        print 'Enter a valid name'
-    elif len(spy.name)>2:  # checking for length of the string name
+    spy.name=raw_input('Enter your name ')  # take name as input
+
+    if len(spy.name)>2:  # checking for length of the name
         print 'Welcome '+ spy.name + ' we are happy to have you with us.'  # concatenating strings
         salutation=raw_input('What should we call you (Mr.or Ms.) ' )
         if salutation == 'Mr.'or salutation == 'Ms.':  # using if
-            spy['name']=salutation+" "+spy['name']
-            print 'Alright '+spy['name'] +'. I\'d like to know a little bit more about you...'
-            spy['age']=input('What\'s your age ')
-            if 50<=spy['age']<=12:  # nested if statement to check range of age
+            spy.name=salutation+" "+spy.name
+            print 'Alright '+spy.name+'. I\'d like to know a little bit more about you...'
+            spy.age=input('What\'s your age ')
+            if 50<=spy.age<=12:  # nested if statement to check range of age
                 print 'You are not eligible to be a spy'
             else:
-                spy['rating']=input('What are your ratings ')  # taking ratings as input
-                if spy['rating'] > 5:
+                spy.rating=input('What are your ratings ')  # taking ratings as input
+                if spy.rating > 5:
                     print 'Great Spy!!'
-                elif spy['rating'] > 3.5:  # elif statement for more than one condition
+                elif spy.rating > 3.5:  # elif statement for more than one condition
                     print 'Average Spy'
-                elif spy['rating'] > 2.5:
+                elif spy.rating > 2.5:
                     print 'Need to work hard!!'
                 else:
                     print 'Who hired you'
                 spy_is_online = True
-                print 'Authentication has been completed. Welcome ' + spy['name'] + '.Your age is ' + str(spy['age']) + ' and your rating is ' + str(spy['rating'])  # typecasting of integer to string
-                spy_chat(spy['name'],spy['age'],spy['rating'])  # calling function spy_chat
+                print 'Authentication has been completed. Welcome ' + spy.name + '.Your age is ' + str(spy.age) + ' and your rating is ' + str(spy.rating)  # typecasting of integer to string
+                spy_chat(spy.name,spy.age,spy.rating)  # calling function spy_chat
 
         else:
             print 'Please enter a vaild salutation'
